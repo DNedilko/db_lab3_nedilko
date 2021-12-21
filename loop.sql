@@ -1,20 +1,20 @@
 DELETE FROM types
-WHERE name LIKE('%Name%');
+WHERE type_name LIKE('%Name%');
 
 select * from types;
 
 DO $$
 DECLARE
-	name types.name%TYPE;
-	id types.id%TYPE;
+	type_name types.type_name%TYPE;
+	type_id types.type_id%TYPE;
 	
 BEGIN
-	name:= 'Name';
-	id:= 6;
+	type_name:= 'Name';
+	type_id:= 6;
 	FOR num IN 1..5
 		LOOP
-			INSERT INTO types(id,name)
-			VALUES(id+num,num||' '||name);
+			INSERT INTO types(type_id, type_name)
+			VALUES(type_id+num,num||' '||type_name);
 		END LOOP;
 END;
 $$

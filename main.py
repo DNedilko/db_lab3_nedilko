@@ -9,33 +9,33 @@ port = '5432'
 
 query_1 = '''
 CREATE VIEW type_amount AS
-SELECT count(information.type) as num_of_records, types.name
-FROM information
+SELECT count(anime.type_id) as num_of_records, types.type_name
+FROM anime
 INNER JOIN types
-ON information.type=types.id
-group by types.name;
+ON anime.type_id=types.type_id
+group by types.type_name;
 '''
 
 query_2 = '''
 CREATE VIEW most_members AS
-SELECT episodes, information.name
-FROM information
+SELECT episodes.members, anime.anime_name
+FROM anime
 INNER JOIN episodes
-ON information.id = episodes.an_id
-ORDER BY members DESC
+ON anime.anime_id = episodes.anime_id
+ORDER BY members
 LIMIT 10;
 '''
 
 
 query_3 = '''
 CREATE VIEW rate_types AS
-SELECT AVG(value), types.name, type
-FROM information
-INNER JOIN rates
-USING(id)
+SELECT AVG(rate_value), types.type_name, types.type_id
+FROM anime
+INNER JOIN ratings
+USING(anime_id)
 INNER JOIN types
-ON types.id = information.type
-GROUP BY types.name, type ;
+ON types.type_id = anime.type_id
+GROUP BY types.type_name, types.type_id ;
 '''
 
 conn = psycopg2.connect(user=username, password=password, dbname=database, host=host, port=port)

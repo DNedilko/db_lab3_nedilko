@@ -8,10 +8,10 @@ database = 'DB_lab2'
 
 file_name = 'nedilko_DB_{}.csv'
 TABLES = [
-    'information',
+    'anime',
     'types',
     'episodes',
-    'rates'
+    'ratings'
 ]
 
 conn = psycopg2.connect(user=username, password=password, dbname=database)

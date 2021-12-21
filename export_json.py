@@ -13,12 +13,12 @@ TABLES = [
     'rates'
 ]
 
-conn = psycopg2.connect(user=username, password=password, dbname=database, host=host, port=port)
+conn = psycopg2.connect(user=username, password=password, dbname=database)
 data = {}
 with conn:
     cur = conn.cursor()
 
-    for table in ('information', 'types', 'episodes', 'rates'):
+    for table in ('anime', 'types', 'episodes', 'ratings'):
         cur.execute('SELECT * FROM ' + table)
         rows = []
         field = [x[0] for x in cur.description]

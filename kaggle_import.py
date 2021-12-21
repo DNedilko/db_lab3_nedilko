@@ -10,38 +10,38 @@ INPUT_CSV_FILE = 'fixed.csv'
 
 
 query_episodes_del='''
-DELETE FROM episodes
+DELETE FROM episodes CASCADE
 '''
 
 query_episodes_add='''
-INSERT INTO episodes(an_id, episodes, members) 
+INSERT INTO episodes(anime_id, episodes, members) 
 VALUES (%s, %s, %s)
 '''
 
 query_types_del='''
-DELETE FROM types
+DELETE FROM types CASCADE
 '''
 
 query_types_add='''
-INSERT INTO types(id, name) 
+INSERT INTO types(type_id, type_name) 
 VALUES (%s, %s)
 '''
 
 query_inf_del='''
-DELETE FROM information
+DELETE FROM anime CASCADE
 '''
 
 query_inf_add='''
-INSERT INTO information(id, name, type) 
+INSERT INTO anime(anime_id, anime_name, type_id) 
 VALUES (%s, %s, %s)
 '''
 
 query_rate_del='''
-DELETE FROM rates
+DELETE FROM ratings CASCADE
 '''
 
 query_rate_add='''
-INSERT INTO rates(id, value) 
+INSERT INTO ratings(anime_id, rate_value) 
 VALUES (%s, %s)
 '''
 
@@ -52,10 +52,12 @@ conn = psycopg2.connect(user=username, password=password, dbname=database)
 with conn:
     cur = conn.cursor()
 
+
     cur.execute(query_episodes_del)
-    cur.execute(query_types_del)
     cur.execute(query_rate_del)
     cur.execute(query_inf_del)
+    cur.execute(query_types_del)
+
     with open(INPUT_CSV_FILE, 'r') as inf:
         reader = csv.DictReader(inf)
 
@@ -83,7 +85,7 @@ with conn:
     cur = conn.cursor()
     with open(INPUT_CSV_FILE, 'r') as inf:
         reader = csv.DictReader(inf)
-#         filling in information table
+#         filling in anime table
 
         for idx, row in enumerate(reader):
             values = (idx+1, row['name'], check(row['type']))
@@ -112,8 +114,8 @@ with conn:
 
 
 
-# #
-# cur.execute('SELECT * FROM information')
+# # #
+# cur.execute('SELECT * FROM anime')
 # for row in cur:
 #     print(row)
 #
@@ -121,7 +123,7 @@ with conn:
 # for row in cur:
 #     print(row)
 #
-# cur.execute('SELECT * FROM rates')
+# cur.execute('SELECT * FROM ratings')
 # for row in cur:
 #     print(row)
 #
